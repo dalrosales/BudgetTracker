@@ -14,7 +14,10 @@ const baseFolder =
 const certificateArg = process.argv.map(arg => arg.match(/--name=(?<value>.+)/i)).filter(Boolean)[0];
 const certificateName = certificateArg ? certificateArg.groups.value : "BudgetTracker";
 
-if (!certificateName && process.env.GITHUB_ACTIONS !== 'true') {
+// Check if running in a CI environment (GitHub Actions, etc.)
+const isCI = process.env.CI === 'true';
+
+if (!certificateName && !isCI) {
     console.error('Invalid certificate name. Run this script in the context of an npm/yarn script or pass --name=<<app>> explicitly.')
     process.exit(-1);
 }
@@ -22,9 +25,9 @@ if (!certificateName && process.env.GITHUB_ACTIONS !== 'true') {
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
 
-// Attempt to create the certificate (skip in GitHub Actions)
+// Attempt to create the certificate (skip in CI environments)
 try {
-    if (!process.env.GITHUB_ACTIONS && (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath))) {
+    if (!isCI && (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath))) {
         child_process.spawnSync('dotnet', [
             'dev-certs',
             'https',
