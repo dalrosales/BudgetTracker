@@ -56,5 +56,8 @@ export default defineConfig({
             key: fs.readFileSync(keyFilePath),
             cert: fs.readFileSync(certFilePath),
         }
+    },
+    build: {
+        outDir: 'dist', // Specify the output directory for build artifacts
     }
 })
