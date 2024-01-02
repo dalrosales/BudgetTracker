@@ -1,5 +1,5 @@
+// https://vitejs.dev/config/
 import { fileURLToPath, URL } from 'node:url';
-
 import { defineConfig } from 'vite';
 import plugin from '@vitejs/plugin-react';
 import fs from 'fs';
@@ -22,18 +22,21 @@ if (!certificateName) {
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
 
-if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
-    if (0 !== child_process.spawnSync('dotnet', [
-        'dev-certs',
-        'https',
-        '--export-path',
-        certFilePath,
-        '--format',
-        'Pem',
-        '--no-password',
-    ], { stdio: 'inherit', }).status) {
-        throw new Error("Could not create certificate.");
+// Attempt to create the certificate
+try {
+    if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
+        child_process.spawnSync('dotnet', [
+            'dev-certs',
+            'https',
+            '--export-path',
+            certFilePath,
+            '--format',
+            'Pem',
+            '--no-password',
+        ], { stdio: 'inherit' });
     }
+} catch (error) {
+    console.warn("Warning: Could not create certificate. HTTPS will not be available.");
 }
 
 // https://vitejs.dev/config/
@@ -53,11 +56,11 @@ export default defineConfig({
         },
         port: 5173,
         https: {
-            key: fs.readFileSync(keyFilePath),
-            cert: fs.readFileSync(certFilePath),
+            key: fs.existsSync(keyFilePath) ? fs.readFileSync(keyFilePath) : undefined,
+            cert: fs.existsSync(certFilePath) ? fs.readFileSync(certFilePath) : undefined,
         }
     },
     build: {
         outDir: 'dist', // Specify the output directory for build artifacts
     }
-})
+});
