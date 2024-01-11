@@ -3,96 +3,99 @@ using Microsoft.EntityFrameworkCore;
 using BudgetTrackerAPI.Data;
 using BudgetTrackerAPI.Models;
 
-[Route("api/[controller]")]
-[ApiController]
-public class TagsController : ControllerBase
+namespace BudgetTrackerAPI.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public TagsController(ApplicationDbContext context)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class TagsController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
 
-    // GET: api/Tags
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Tag>>> GetTags()
-    {
-        return await _context.Tags.ToListAsync();
-    }
-
-    // GET: api/Tags/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Tag>> GetTag(int id)
-    {
-        var tag = await _context.Tags.FindAsync(id);
-
-        if (tag == null)
+        public TagsController(ApplicationDbContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        return tag;
-    }
-
-    // POST: api/Tags
-    [HttpPost]
-    public async Task<ActionResult<Tag>> PostTag(Tag tag)
-    {
-        _context.Tags.Add(tag);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetTag), new { id = tag.TagId }, tag);
-    }
-
-    // PUT: api/Tags/5
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutTag(int id, Tag tag)
-    {
-        if (id != tag.TagId)
+        // GET: api/Tags
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTags()
         {
-            return BadRequest();
+            return await _context.Tags.ToListAsync();
         }
 
-        _context.Entry(tag).State = EntityState.Modified;
+        // GET: api/Tags/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Tag>> GetTag(int id)
+        {
+            var tag = await _context.Tags.FindAsync(id);
 
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!TagExists(id))
+            if (tag == null)
             {
                 return NotFound();
             }
-            else
-            {
-                throw;
-            }
+
+            return tag;
         }
 
-        return NoContent();
-    }
-
-    // DELETE: api/Tags/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteTag(int id)
-    {
-        var tag = await _context.Tags.FindAsync(id);
-        if (tag == null)
+        // POST: api/Tags
+        [HttpPost]
+        public async Task<ActionResult<Tag>> PostTag(Tag tag)
         {
-            return NotFound();
+            _context.Tags.Add(tag);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetTag), new { id = tag.TagId }, tag);
         }
 
-        _context.Tags.Remove(tag);
-        await _context.SaveChangesAsync();
+        // PUT: api/Tags/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutTag(int id, Tag tag)
+        {
+            if (id != tag.TagId)
+            {
+                return BadRequest();
+            }
 
-        return NoContent();
-    }
+            _context.Entry(tag).State = EntityState.Modified;
 
-    private bool TagExists(int id)
-    {
-        return _context.Tags.Any(e => e.TagId == id);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!TagExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/Tags/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteTag(int id)
+        {
+            var tag = await _context.Tags.FindAsync(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+
+            _context.Tags.Remove(tag);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool TagExists(int id)
+        {
+            return _context.Tags.Any(e => e.TagId == id);
+        }
     }
 }

@@ -3,96 +3,99 @@ using Microsoft.EntityFrameworkCore;
 using BudgetTrackerAPI.Data;
 using BudgetTrackerAPI.Models;
 
-[Route("api/[controller]")]
-[ApiController]
-public class ExpensesController : ControllerBase
+namespace BudgetTrackerAPI.Controllers
 {
-    private readonly ApplicationDbContext _context;
-
-    public ExpensesController(ApplicationDbContext context)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ExpensesController : ControllerBase
     {
-        _context = context;
-    }
+        private readonly ApplicationDbContext _context;
 
-    // GET: api/Expenses
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Expense>>> GetExpenses()
-    {
-        return await _context.Expenses.ToListAsync();
-    }
-
-    // GET: api/Expenses/5
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Expense>> GetExpense(int id)
-    {
-        var expense = await _context.Expenses.FindAsync(id);
-
-        if (expense == null)
+        public ExpensesController(ApplicationDbContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        return expense;
-    }
-
-    // POST: api/Expenses
-    [HttpPost]
-    public async Task<ActionResult<Expense>> PostExpense(Expense expense)
-    {
-        _context.Expenses.Add(expense);
-        await _context.SaveChangesAsync();
-
-        return CreatedAtAction(nameof(GetExpense), new { id = expense.ExpenseId }, expense);
-    }
-
-    // PUT: api/Expenses/5
-    [HttpPut("{id}")]
-    public async Task<IActionResult> PutExpense(int id, Expense expense)
-    {
-        if (id != expense.ExpenseId)
+        // GET: api/Expenses
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Expense>>> GetExpenses()
         {
-            return BadRequest();
+            return await _context.Expenses.ToListAsync();
         }
 
-        _context.Entry(expense).State = EntityState.Modified;
+        // GET: api/Expenses/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Expense>> GetExpense(int id)
+        {
+            var expense = await _context.Expenses.FindAsync(id);
 
-        try
-        {
-            await _context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!ExpenseExists(id))
+            if (expense == null)
             {
                 return NotFound();
             }
-            else
-            {
-                throw;
-            }
+
+            return expense;
         }
 
-        return NoContent();
-    }
-
-    // DELETE: api/Expenses/5
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteExpense(int id)
-    {
-        var expense = await _context.Expenses.FindAsync(id);
-        if (expense == null)
+        // POST: api/Expenses
+        [HttpPost]
+        public async Task<ActionResult<Expense>> PostExpense(Expense expense)
         {
-            return NotFound();
+            _context.Expenses.Add(expense);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetExpense), new { id = expense.ExpenseId }, expense);
         }
 
-        _context.Expenses.Remove(expense);
-        await _context.SaveChangesAsync();
+        // PUT: api/Expenses/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutExpense(int id, Expense expense)
+        {
+            if (id != expense.ExpenseId)
+            {
+                return BadRequest();
+            }
 
-        return NoContent();
-    }
+            _context.Entry(expense).State = EntityState.Modified;
 
-    private bool ExpenseExists(int id)
-    {
-        return _context.Expenses.Any(e => e.ExpenseId == id);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!ExpenseExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/Expenses/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteExpense(int id)
+        {
+            var expense = await _context.Expenses.FindAsync(id);
+            if (expense == null)
+            {
+                return NotFound();
+            }
+
+            _context.Expenses.Remove(expense);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool ExpenseExists(int id)
+        {
+            return _context.Expenses.Any(e => e.ExpenseId == id);
+        }
     }
 }

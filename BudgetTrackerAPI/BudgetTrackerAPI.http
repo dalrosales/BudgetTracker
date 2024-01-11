@@ -1,6 +1,6 @@
-@BudgetTrackerAPI_HostAddress = http://localhost:5204
+@BudgetTrackerAPI_HostAddress = http://localhost:1433
 
-GET {{BudgetTrackerAPI_HostAddress}}/weatherforecast/
+GET {{BudgetTrackerAPI_HostAddress}}/categories
 Accept: application/json
 
 ###
