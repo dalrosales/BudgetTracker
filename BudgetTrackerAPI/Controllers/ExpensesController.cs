@@ -2,9 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using BudgetTrackerAPI.Data;
 using BudgetTrackerAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BudgetTrackerAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ExpensesController : ControllerBase
