@@ -9,6 +9,7 @@ import App from './App.jsx'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ExpensesPage from './pages/ExpensesPage';
+import IncomePage from './pages/IncomePage';
 
 const router = createBrowserRouter([
     {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     {
         path: "/expenses",
         element: <ExpensesPage/>,
+    },
+    {
+        path: "/income",
+        element: <IncomePage/>,
     },
 ]);
 

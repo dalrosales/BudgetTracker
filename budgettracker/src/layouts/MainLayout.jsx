@@ -4,7 +4,7 @@ import Sidebar from '../components/common/Sidebar'
 
 function MainLayout({children}) {
     return (
-        <div>
+        <div className="bg-neutral-200 h-screen w-screen flex flex-row">
             <Sidebar></Sidebar>
             <Navbar></Navbar>
             <div>{children}</div>
