@@ -8,6 +8,7 @@ import './index.css'
 import App from './App.jsx'
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import ExpensesPage from './pages/ExpensesPage';
 
 const router = createBrowserRouter([
     {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <RegisterPage/>,
+    },
+    {
+        path: "/expenses",
+        element: <ExpensesPage/>,
     },
 ]);
 

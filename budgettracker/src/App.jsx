@@ -1,11 +1,11 @@
 import React from 'react';
-import Navbar from './components/common/Navbar'
+import MainLayout from './layouts/MainLayout';
 
 function App() {
     return (
         <div>
-            <Navbar></Navbar>
-            <div>Home page</div>
+            <MainLayout>
+            </MainLayout>
         </div>
     );
 }
