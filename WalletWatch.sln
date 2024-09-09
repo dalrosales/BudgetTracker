@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTrackerAPI", "BudgetTrackerAPI\BudgetTrackerAPI.csproj", "{83771137-4552-461C-81FC-B8C8D4CA60EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetTracker", "BudgetTracker\BudgetTracker.csproj", "{C50AE9FF-00D7-4296-A7CA-9309AA689B41}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WalletWatch", "WalletWatch\WalletWatch.csproj", "{6B0F7629-5312-4E74-B46A-9E924B28108B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{83771137-4552-461C-81FC-B8C8D4CA60EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83771137-4552-461C-81FC-B8C8D4CA60EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83771137-4552-461C-81FC-B8C8D4CA60EE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C50AE9FF-00D7-4296-A7CA-9309AA689B41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C50AE9FF-00D7-4296-A7CA-9309AA689B41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C50AE9FF-00D7-4296-A7CA-9309AA689B41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C50AE9FF-00D7-4296-A7CA-9309AA689B41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B0F7629-5312-4E74-B46A-9E924B28108B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B0F7629-5312-4E74-B46A-9E924B28108B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B0F7629-5312-4E74-B46A-9E924B28108B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B0F7629-5312-4E74-B46A-9E924B28108B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
