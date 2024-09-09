@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - WalletWatch</title>
+    <title>@ViewData["Title"] - Budget Tracker</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WalletWatch.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/BudgetTracker.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
         <nav class="navbar bg-dark border-bottom border-body navbar-expand-sm navbar-toggleable-sm box-shadow mb-3" data-bs-theme="dark">
             <div class="container-fluid">
-                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">WalletWatch</a>
+                <a class="navbar-brand text-light" asp-area="" asp-controller="Home" asp-action="Index">Budget Tracker</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,16 +23,16 @@
                             <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Budgets</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Budgets" asp-action="Index">Budgets</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Expenses</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Expenses" asp-action="Index">Expenses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Income</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Income" asp-action="Index">Income</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Settings</a>
+                            <a class="nav-link text-light" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
                         </li>
                     </ul>
                 </div>
@@ -47,7 +47,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - WalletWatch - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Budget Tracker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
