@@ -1,4 +1,4 @@
-namespace BudgetTracker.Models
+namespace WalletWatch.Models
 {
     public class ErrorViewModel
     {

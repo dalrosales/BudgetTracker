@@ -1,8 +1,8 @@
-using BudgetTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using WalletWatch.Models;
 
-namespace BudgetTracker.Controllers
+namespace WalletWatch.Controllers
 {
     public class HomeController : Controller
     {
