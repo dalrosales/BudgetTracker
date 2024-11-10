@@ -1,25 +1,30 @@
 ﻿const path = require('path');
 
 module.exports = {
-    entry: './wwwroot/index.js', // Your entry file
+    entry: './wwwroot/index.js',
     output: {
-        filename: 'bundle.js', // Output file name
-        path: path.resolve(__dirname, 'wwwroot/dist'), // Output directory
+        filename: 'bundle.js',
+        path: path.resolve(__dirname, 'wwwroot/dist'),
+        publicPath: '/dist/', // Ensures assets are served from '/dist/' in production
     },
     module: {
         rules: [
             {
-                test: /\.css$/, // Regex to match .css files
-                use: ['style-loader', 'css-loader'], // Loaders to process CSS
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
             },
         ],
     },
-    mode: 'development', // Change to 'production' for production build
+    mode: 'development',
     devServer: {
-        static: path.join(__dirname, 'wwwroot'), // Serve content from wwwroot
-        port: 3000, // Align with Docker EXPOSE
+        static: {
+            directory: path.join(__dirname, 'wwwroot'),
+        },
+        port: 3000, // Port for dev server (only serves assets)
+        devMiddleware: {
+            publicPath: '/dist/',
+        },
         hot: true,
         liveReload: true,
-        server: 'http',
     },
 };

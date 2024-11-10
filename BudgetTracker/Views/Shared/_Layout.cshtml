@@ -6,8 +6,8 @@
     <title>@ViewData["Title"] - Budget Tracker</title>
 
     <!-- Styles -->
-    <link href="http://localhost:1234/css/site.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/BudgetTracker.styles.css" asp-append-version="true" />
+    <link href="~/dist/bundle.css" rel="stylesheet" />
+    <!--<link rel="stylesheet" href="~/BudgetTracker.styles.css" asp-append-version="true" />-->
 </head>
 <body class="d-flex flex-column">
     <div class="d-flex flex-row">
@@ -52,8 +52,7 @@
     </footer>
 
     <!-- Scripts -->
-    <!--<script src="~/dist/bundle.js"></script> //Production-->
-    <script src="http://localhost:8080/bundle.js"></script>
+    <script src="~/dist/bundle.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# BudgetTracker
 
-## Getting Started
+BudgetTracker is a web application built with ASP.NET 8 MVC to manage budgets and track expenses effectively. The project integrates Webpack for front-end asset bundling. This is a personal project in the beginning stages of development.
 
-First, run the development server:
+## Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js and NPM - Required for Webpack bundling
+- .NET SDK 8 - Required to build and run the application
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1) Clone the repository: 
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+	`git clone https://github.com/yourusername/BudgetTracker.git`
 
-## Learn More
+2) Navigate to the project directory:
 
-To learn more about Next.js, take a look at the following resources:
+	`cd BudgetTracker`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3) Install npm dependencies:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+	`npm install`
 
-## Deploy on Vercel
+4) Restore .NET dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+	`dotnet restore`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Development
+
+1) Start Webpack Dev Server
+
+	To start the Webpack Dev Server with hot-reloading:
+
+	`npm run dev`
+
+	By default, it runs on [http://localhost:3000](http://localhost:3000).
+
+2) Run the ASP.NET Application
+
+	In Visual Studio, run the project on HTTPS to access the application at [https://localhost:7056](https://localhost:7056). 
+
+	Ensure Webpack Dev Server is running to see front-end changes live.
+
+## Production Build
+
+To build for production, generating optimized assets:
+
+`npm run build`
+
+This outputs bundled files to wwwroot/dist.
+
+## License
+This project is licensed under the MIT License.
