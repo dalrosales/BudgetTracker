@@ -10,11 +10,3 @@ main {
     overflow-x: auto;
     overflow-y: hidden;
 }
-
-col-nav {
-    background-color: black;
-}
-
-col-main {
-    background-color: darkslategray;
-}

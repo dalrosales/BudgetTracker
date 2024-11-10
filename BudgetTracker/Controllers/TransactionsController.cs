@@ -2,9 +2,9 @@
 
 namespace BudgetTracker.Controllers
 {
-    public class ExpensesController : Controller
+    public class TransactionsController : Controller
     {
-        public IActionResult Expenses()
+        public IActionResult Transactions()
         {
             return View();
         }
