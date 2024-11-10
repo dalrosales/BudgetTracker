@@ -4,7 +4,7 @@ namespace BudgetTracker.Controllers
 {
     public class SettingsController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Settings()
         {
             return View();
         }

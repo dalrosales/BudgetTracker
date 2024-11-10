@@ -4,7 +4,7 @@ namespace BudgetTracker.Controllers
 {
     public class IncomeController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Income()
         {
             return View();
         }
