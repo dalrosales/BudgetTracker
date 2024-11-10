@@ -1,11 +1,11 @@
 {
   "name": "budgettracker",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "wwwroot/js/site.js",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "dev": "webpack serve --config webpack.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "copy:css": "cpx ./node_modules/bootstrap/dist/css/bootstrap.min.css ./wwwroot/css",
+    "copy:js": "cpx \"./node_modules/jquery/dist/jquery.min.js\" ./wwwroot/js/ && cpx \"./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js\" ./wwwroot/js/ && cpx \"./node_modules/@popperjs/core/dist/umd/popper.min.js\" ./wwwroot/js/ && cpx \"./node_modules/jquery-validation/dist/jquery.validate.min.js\" ./wwwroot/js/ && cpx \"./node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js\" ./wwwroot/js/"
   },
   "keywords": [],
   "author": "",
@@ -15,14 +15,10 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "jquery": "^3.7.1",
-    "jquery-validation": "^1.21.0",
+    "jquery-validation": "^1.21.0", 
     "jquery-validation-unobtrusive": "^4.0.0"
   },
   "devDependencies": {
-    "css-loader": "^7.1.2",
-    "style-loader": "^4.0.0",
-    "webpack": "^5.96.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-server": "^5.1.0"
+    "cpx": "^1.5.0"
   }
 }

@@ -6,53 +6,28 @@
     <title>@ViewData["Title"] - Budget Tracker</title>
 
     <!-- Styles -->
-    <link href="~/dist/bundle.css" rel="stylesheet" />
-    <!--<link rel="stylesheet" href="~/BudgetTracker.styles.css" asp-append-version="true" />-->
+    <link href="~/css/site.css" rel="stylesheet">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body class="d-flex flex-column">
-    <div class="d-flex flex-row">
-        <nav class="d-flex flex-column flex-shrink-0 p-3 text-bg-dark">
-            <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                <span class="fs-4 text-black">BudgetTracker</span>
-            </a>
-            <hr />
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" asp-area="" asp-controller="Home" asp-action="Index">
-                        <svg></svg>
-                        Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Budgets" asp-action="Index">
-                        <svg></svg>
-                        Budgets
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Income" asp-action="Index">
-                        <svg></svg>
-                        Income
-                    </a>
-                </li>
-            </ul>
+<body class="d-flex flex-row">
+    <div class="d-flex flex-column col-nav">
+        <nav class="">
         </nav>
-
-        <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Budget Tracker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <div class="d-flex flex-column col-main">
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
 
-    <!-- Scripts -->
-    <script src="~/dist/bundle.js"></script>
+    <!-- JavaScript files -->
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/popper.min.js"></script>
+    <script src="~/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/js/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/site.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
