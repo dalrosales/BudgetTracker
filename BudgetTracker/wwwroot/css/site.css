@@ -1,7 +1,6 @@
 /**Layout**/
 
 body {
-    min-height: 100vh;
 }
 
 main {
@@ -9,4 +8,12 @@ main {
     max-height: 100vh;
     overflow-x: auto;
     overflow-y: hidden;
+}
+
+/**Transactions**/
+.scrollable-cards {
+    max-height: 80vh; /* Set a fixed height for scroll area */
+    overflow-y: auto; /* Enable vertical scrolling */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    padding: 1rem; /* Optional: add padding for visual spacing */
 }

@@ -5,51 +5,78 @@
     ViewData["Title"] = "Budgets";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Budgets</h1>
+<!--Title-->
+<div class="text-center mt-4 mb-4">
+    <h1 class="display-4">Housing and Bills</h1>
 </div>
 
-<div class="container-fluid">
-    <div class="card text-center col-5">
-        <div class="card-header">
-            Housing Expenses & Bills
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Categories</th>
-                        <th scope="col">Budget</th>
-                        <th scope="col">Actual</th>
-                        <th scope="col">Difference</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th scope="row">Groceries</th>
-                        <td>$ 550</td>
-                        <td>$ 250</td>
-                        <td>$ 50</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Restaurants</th>
-                        <td>$ 200</td>
-                        <td>$ 100</td>
-                        <td>$ 100</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Fast Food</th>
-                        <td>$50</td>
-                        <td>$20</td>
-                        <td>$30</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="card-footer text-body-secondary">
-            Last updated: 2 days ago
-        </div>
+<div class="d-flex justify-content-between ms-4 me-4">
+    <!--Drop-down-->
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownBudgets" data-bs-toggle="dropdown" aria-expanded="false">
+            Select Budget
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownBudgets">
+            <li><a class="dropdown-item" href="#">Housing and Bills</a></li>
+            <li><a class="dropdown-item" href="#">Expenses and Wants</a></li>
+            <li><a class="dropdown-item" href="#">Savings and Debts</a></li>
+        </ul>
     </div>
 
-    
+    <!--Add Category-->
+    <button class="btn btn-success" type="button">
+        + Add Category
+    </button>
+</div>
+
+<br />
+
+<!--Table-->
+<div class="m-4">
+    <table class="table table-dark table-striped">
+        <caption class="justify-content-between">
+            As of: November 11, 2024
+        </caption>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Category</th>
+                <th scope="col">Budgeted</th>
+                <th scope="col">Actual</th>
+                <th scope="col">Difference</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Rent</td>
+                <td>$ 2,000</td>
+                <td>$ 1,900</td>
+                <td>$ 100</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Water</td>
+                <td>$ 25</td>
+                <td>$ 20</td>
+                <td>$ 5</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td>Electricity</td>
+                <td>$ 50</td>
+                <td>$ 40</td>
+                <td>$ 10</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th scope="row">4</th>
+                <td class="fw-bold">Total</td>
+                <td class="fw-bold">$ 2,075</td>
+                <td class="fw-bold">$ 1,960</td>
+                <td class="fw-bold">$ 115</td>
+            </tr>
+        </tfoot>
+    </table>
 </div>
