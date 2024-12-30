@@ -1,24 +1,21 @@
 {
   "name": "budgettracker",
   "version": "1.0.0",
+  "description": "",
   "main": "wwwroot/js/site.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "copy:css": "cpx ./node_modules/bootstrap/dist/css/bootstrap.min.css ./wwwroot/css",
-    "copy:js": "cpx \"./node_modules/jquery/dist/jquery.min.js\" ./wwwroot/js/ && cpx \"./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js\" ./wwwroot/js/ && cpx \"./node_modules/@popperjs/core/dist/umd/popper.min.js\" ./wwwroot/js/ && cpx \"./node_modules/jquery-validation/dist/jquery.validate.min.js\" ./wwwroot/js/ && cpx \"./node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js\" ./wwwroot/js/"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "@popperjs/core": "^2.11.8",
-    "bootstrap": "^5.3.3",
-    "jquery": "^3.7.1",
-    "jquery-validation": "^1.21.0", 
-    "jquery-validation-unobtrusive": "^4.0.0"
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx tailwindcss -i wwwroot/css/app.css -o wwwroot/css/app.min.css",
+    "watch:css": "npx tailwindcss -i wwwroot/css/app.css -o wwwroot/css/app.min.css --watch"
   },
-  "devDependencies": {
-    "cpx": "^1.5.0"
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "flowbite": "^2.5.2",
+    "postcss": "^8.4.49",
+    "postcss-cli": "^11.0.0",
+    "tailwindcss": "^3.4.17"
   }
 }
