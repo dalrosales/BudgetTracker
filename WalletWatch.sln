@@ -5,7 +5,7 @@ VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTrackerAPI", "BudgetTrackerAPI\BudgetTrackerAPI.csproj", "{83771137-4552-461C-81FC-B8C8D4CA60EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BudgetTracker", "BudgetTracker\BudgetTracker.csproj", "{72F7DE7E-2172-4E80-B39F-269263C9D9C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BudgetTracker", "BudgetTracker\BudgetTracker.csproj", "{72F7DE7E-2172-4E80-B39F-269263C9D9C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
