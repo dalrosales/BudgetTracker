@@ -1,10 +1,79 @@
 ﻿@page
-@model BudgetTracker.Pages.BudgetsModel
+@model BudgetsModel
 @{
     ViewData["Title"] = "Budgets";
 }
 
-
-<div class="w-full bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
-    <div class="bg-blue-600 h-2.5 rounded-full" style="width: 45%"></div>
+<div class="border-2 border-solid rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4">
+    <div class="pt-4 px-4">
+        <h1 class="flex justify-center text-lg font-semibold">Housing Expenses & Bills</h1>
+        <div>
+            <div class="flex justify-between">
+                <div class="mb-1 text-base font-medium dark:text-white">$875</div>
+                <div class="mb-1 text-base font-medium dark:text-white">$1,750</div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 50%"></div>
+            </div>
+            <div>
+                <div class="mb-1 text-base font-medium dark:text-white">Rent</div>
+            </div>
+        </div>
+        <div>
+            <div class="flex justify-between">
+                <div class="mb-1 text-base font-medium dark:text-white">$10</div>
+                <div class="mb-1 text-base font-medium dark:text-white">$45</div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 22.22%"></div>
+            </div>
+            <div>
+                <div class="mb-1 text-base font-medium dark:text-white">Electricity</div>
+            </div>
+        </div>
+        <div>
+            <div class="flex justify-between">
+                <div class="mb-1 text-base font-medium dark:text-white">$10</div>
+                <div class="mb-1 text-base font-medium dark:text-white">$20</div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 50%"></div>
+            </div>
+            <div>
+                <div class="mb-1 text-base font-medium dark:text-white">Water</div>
+            </div>
+        </div>
+        <div>
+            <div class="flex justify-between">
+                <div class="mb-1 text-base font-medium dark:text-white">$0</div>
+                <div class="mb-1 text-base font-medium dark:text-white">$35</div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-1.5 mb-1 dark:bg-gray-700">
+                <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 0%"></div>
+            </div>
+            <div>
+                <div class="mb-1 text-base font-medium dark:text-white">Internet</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+    <div class="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
+</div>
+<div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+</div>
+<div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
+<div class="grid grid-cols-2 gap-4">
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
+    <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
 </div>
