@@ -1,3 +1,4 @@
+using BudgetTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,6 +7,7 @@ namespace BudgetTracker.Pages
     public class BudgetsModel : PageModel
     {
         private readonly ILogger<BudgetsModel> _logger; 
+        public List<BudgetItem> Budgets { get; set; } = new();
 
         public BudgetsModel(ILogger<BudgetsModel> logger)
         {
@@ -14,7 +16,13 @@ namespace BudgetTracker.Pages
 
         public void OnGet()
         {
-
+            // Sample Data
+            Budgets = new List<BudgetItem>
+            {
+                new() { Category = "Groceries", BudgetedAmount = 500, ActualAmount = 450 },
+                new() { Category = "Entertainment", BudgetedAmount = 200, ActualAmount = 250 },
+                new() { Category = "Rent", BudgetedAmount = 1500, ActualAmount = 1500 }
+            };
         }
     }
 }
