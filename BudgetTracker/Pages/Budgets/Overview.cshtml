@@ -1,7 +1,11 @@
-﻿@model BudgetTracker.Models.BudgetItem
+﻿@page
+@model BudgetsModel
+@{
+    ViewData["Title"] = "Budgets - Overview";
+}
 
-<div class="border-2 border-solid rounded-lg border-gray-300 dark:border-gray-600 h-auto mb-4 p-4">
-    <h4 class="text-2xl font-bold dark:text-white">Overall Budget</h4>
+<div class="border-2 border-solid border-gray-300 rounded-lg dark:border-gray-600 h-auto mb-4 p-4 md:h-64">
+    <h3 class="text-center text-3xl font-bold dark:text-white">Overall Budget</h3>
     <div class="m-2">
         <div>
             <div class="flex justify-between mb-1">
@@ -41,3 +45,7 @@
         </div>
     </div>
 </div>
+@foreach (var budget in Model.Budgets)
+{
+    <partial name="_BudgetItem" model="budget" />
+}

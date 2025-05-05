@@ -2,11 +2,11 @@ using BudgetTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace BudgetTracker.Pages
+namespace BudgetTracker.Pages.Budgets
 {
     public class BudgetsModel : PageModel
     {
-        private readonly ILogger<BudgetsModel> _logger; 
+        private readonly ILogger<BudgetsModel> _logger;
         public List<BudgetItem> Budgets { get; set; } = new();
 
         public BudgetsModel(ILogger<BudgetsModel> logger)
