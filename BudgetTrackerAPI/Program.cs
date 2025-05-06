@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
 using BudgetTrackerAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var connString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<BudgetTrackerContext>(o => o.UseSqlServer(connString));
+var keyVaultEndpoint = new Uri(builder.Configuration["VaultKey"]);
+var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential());
+
+KeyVaultSecret kvs = secretClient.GetSecret("BudgetTrackerAPISecret1");
+builder.Services.AddDbContext<BudgetTrackerContext>(o => o.UseSqlServer(kvs.Value));
 
 var app = builder.Build();
 
