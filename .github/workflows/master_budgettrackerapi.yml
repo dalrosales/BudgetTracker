@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy ASP.Net Core app to Azure Web App - BudgetTrackerAPI
+name: Build and deploy ASP.Net Core Web API to Azure Web App - BudgetTrackerAPI
 
 on:
   push:
@@ -13,26 +10,30 @@ jobs:
   build:
     runs-on: windows-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
 
-      - name: Build with dotnet
-        run: dotnet build ./BudgetTrackerAPI/BudgetTrackerAPI.csproj --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore ./BudgetTrackerAPI/BudgetTrackerAPI.csproj
 
-      - name: Publish API Project
-      - run: dotnet publish ./BudgetTrackerAPI/BudgetTrackerAPI.csproj -c Release -o ./publish
+      - name: Build Web API
+        run: dotnet build ./BudgetTrackerAPI/BudgetTrackerAPI.csproj --configuration Release --no-restore
 
-      - name: Upload artifact for deployment job
+      - name: Publish Web API
+        run: dotnet publish ./BudgetTrackerAPI/BudgetTrackerAPI.csproj -c Release -o ./publish --no-build
+
+      - name: Upload artifact for deployment
         uses: actions/upload-artifact@v4
         with:
-          name: .net-api
+          name: api-artifact
           path: ./publish
 
   deploy:
@@ -42,16 +43,16 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-      contents: read #This is required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
-      - name: Download artifact from build job
+      - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
-          name: .net-api
-      
-      - name: Login to Azure
+          name: api-artifact
+
+      - name: Azure Login
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -62,7 +63,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'BudgetTrackerAPI'
+          app-name: 'BudgetTrackerAPI'  # 🔁 Make sure this matches your Azure Web App name
           slot-name: 'Production'
           package: .
-          
