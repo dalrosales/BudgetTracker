@@ -24,9 +24,9 @@ jobs:
           dotnet-version: '8.x'
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ./BudgetTrackerAPI/BudgetTrackerAPI.csproj --configuration Release
 
-      - name: dotnet publish
+      - name: Publish API Project
       - run: dotnet publish ./BudgetTrackerAPI/BudgetTrackerAPI.csproj -c Release -o ./publish
 
       - name: Upload artifact for deployment job
