@@ -1,0 +1,68 @@
+name: Build and deploy ASP.Net Core Web API to Azure Web App - BudgetTrackerAPI
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./BudgetTrackerAPI/BudgetTrackerAPI.csproj
+
+      - name: Build Web API
+        run: dotnet build ./BudgetTrackerAPI/BudgetTrackerAPI.csproj --configuration Release --no-restore
+
+      - name: Publish Web API
+        run: dotnet publish ./BudgetTrackerAPI/BudgetTrackerAPI.csproj -c Release -o ./publish --no-build
+
+      - name: Upload artifact for deployment
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-artifact
+          path: ./publish
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: api-artifact
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'BudgetTrackerAPI'  # 🔁 Make sure this matches your Azure Web App name
+          slot-name: 'Production'
+          package: .
