@@ -16,6 +16,13 @@ builder.Configuration.AddAzureKeyVault(
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Safely get the API Key
+var apiKey = builder.Configuration["BudgetTrackerAPIKey1"];
+if (string.IsNullOrWhiteSpace(apiKey))
+{
+    throw new InvalidOperationException("API key not found in Key Vault.");
+}
+
 // Safely get the connection string from configuration
 var connectionString = builder.Configuration["BudgetTrackerAPISecret1"];
 if (string.IsNullOrWhiteSpace(connectionString))
@@ -28,6 +35,25 @@ builder.Services.AddDbContext<BudgetTrackerContext>(options =>
 );
 
 var app = builder.Build();
+
+// Require API Key
+app.Use(async (context, next) =>
+{
+    // Only enforce API key check in non-development environments
+    if (!app.Environment.IsDevelopment())
+    {
+        var providedApiKey = context.Request.Headers["x-api-key"].FirstOrDefault();
+
+        if (string.IsNullOrWhiteSpace(providedApiKey) || providedApiKey != apiKey)
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            await context.Response.WriteAsync("Unauthorized: Missing or invalid API key.");
+            return;
+        }
+    }
+
+    await next();
+});
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
