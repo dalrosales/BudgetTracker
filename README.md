@@ -1,53 +1,58 @@
-# BudgetTracker
+# BudgetTracker 
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-5C2D91?style=for-the-badge&logo=aspdotnet&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Azure](https://img.shields.io/badge/microsoft%20azure-0089D6?style=for-the-badge&logo=microsoft-azure&logoColor=white) ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white) ![npm](https://img.shields.io/badge/npm-8B7B47?style=for-the-badge&logo=npm&logoColor=white) 
 
-BudgetTracker is a web application built with ASP.NET 8 MVC to manage budgets and track expenses effectively. The project integrates Webpack for front-end asset bundling. This is a personal project in the beginning stages of development.
+**BudgetTracker** is a personal finance web application that helps users create budgets, track income, manage expenses, and set financial goals. Designed for simplicity and flexibility, it allows users to break down spending into categories and subcategories, monitor progress visually, and stay in control of their finances.
 
-## Prerequisites
+## 🚧 Status
+This is a personal project under active development and iteration. Most features are still being developed.
 
-- Node.js and NPM - Required for Webpack bundling
-- .NET SDK 8 - Required to build and run the application
+## 📦 Project Overview
 
-## Installation
+- Create and manage budgets with customizable periods
+- Organize spending by categories and subcategories
+- Track income and record transactions
+- Set and monitor savings or debt-reduction goals
+- View progress and insights through charts and dashboards
 
-1) Clone the repository: 
+## Tech Stack
 
-	`git clone https://github.com/yourusername/BudgetTracker.git`
+### 🖥️ Frontend
 
-2) Navigate to the project directory:
+- `ASP.NET Core Razor Pages` (`.NET 8`)
+- `Flowbite` (Tailwind CSS component library)
+- `HTML5`, `CSS3`, `JavaScript`
 
-	`cd BudgetTracker`
+### ⚙️ Backend
 
-3) Install npm dependencies:
+- `ASP.NET Core Web API` (`.NET 8`)
+- RESTful architecture
+- Business logic separated via service and data layers
+- `Azure SQL Database`
 
-	`npm install`
+### ☁️ Hosting
 
-4) Restore .NET dependencies:
+- Frontend, API, and database hosted on `Microsoft Azure`
+- Environment variables managed securely via Azure
 
-	`dotnet restore`
+### 🧱  Dependencies
 
-## Development
+BudgetTracker relies on the following major libraries and frameworks:
 
-1) Start Webpack Dev Server
+- `ASP.NET Core` (`.NET 8`) — Backend web framework
+- `Razor Pages` — Simplified server-side UI rendering
+- `Flowbite` — Tailwind CSS component library for UI components
+- `Tailwind CSS` — Utility-first CSS framework
+- `Swagger` — API documentation and testing interface
+- `Azure SQL Database` — Cloud-hosted relational database
 
-	To start the Webpack Dev Server with hot-reloading:
+All third-party packages and frameworks are credited to their respective authors and used in compliance with their open-source licenses.
 
-	`npm run dev`
+## ⚖️ License
 
-	By default, it runs on [http://localhost:3000](http://localhost:3000).
+This project is provided for demonstration and educational purposes only.
 
-2) Run the ASP.NET Application
+**All rights reserved.**
 
-	In Visual Studio, run the project on HTTPS to access the application at [https://localhost:7056](https://localhost:7056). 
+You may not copy, reuse, or redistribute any part of this codebase without explicit written permission from the author.
 
-	Ensure Webpack Dev Server is running to see front-end changes live.
-
-## Production Build
-
-To build for production, generating optimized assets:
-
-`npm run build`
-
-This outputs bundled files to wwwroot/dist.
-
-## License
-This project is licensed under the MIT License.
+This project includes third-party libraries (e.g., `Flowbite`, `Tailwind CSS`) which remain under their respective licenses.
