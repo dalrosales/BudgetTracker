@@ -5,16 +5,27 @@ using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load Key Vault into Configuration
+builder.Configuration.AddAzureKeyVault(
+    new Uri(builder.Configuration["VaultKey"]),
+    new DefaultAzureCredential()
+);
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var keyVaultEndpoint = new Uri(builder.Configuration["VaultKey"]);
-var secretClient = new SecretClient(keyVaultEndpoint, new DefaultAzureCredential());
+// Safely get the connection string from configuration
+var connectionString = builder.Configuration["BudgetTrackerAPISecret1"];
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException("Connection string not found in Key Vault.");
+}
 
-KeyVaultSecret kvs = secretClient.GetSecret("BudgetTrackerAPISecret1");
-builder.Services.AddDbContext<BudgetTrackerContext>(o => o.UseSqlServer(kvs.Value));
+builder.Services.AddDbContext<BudgetTrackerContext>(options =>
+    options.UseSqlServer(connectionString)
+);
 
 var app = builder.Build();
 
@@ -23,6 +34,11 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
+
+app.MapGet("/test-config", (IConfiguration config) =>
+{
+    return Results.Ok(config["BudgetTrackerAPISecret1"]);
+});
 
 app.MapGet("api/budgets", async (BudgetTrackerContext db) =>
 {
