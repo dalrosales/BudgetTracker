@@ -35,11 +35,6 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.MapGet("/test-config", (IConfiguration config) =>
-{
-    return Results.Ok(config["BudgetTrackerAPISecret1"]);
-});
-
 app.MapGet("api/budgets", async (BudgetTrackerContext db) =>
 {
     return await db.Budgets.ToListAsync();
