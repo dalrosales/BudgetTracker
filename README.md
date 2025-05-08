@@ -6,7 +6,7 @@
 ## 🚧 Status
 This is a personal project under active development and iteration. Most features are still being developed.
 
-## 📦 Project Overview
+## 🧭 Project Overview
 
 - Create and manage budgets with customizable periods
 - Organize spending by categories and subcategories
@@ -14,7 +14,7 @@ This is a personal project under active development and iteration. Most features
 - Set and monitor savings or debt-reduction goals
 - View progress and insights through charts and dashboards
 
-## Tech Stack
+## 📦Tech Stack
 
 ### 🖥️ Frontend
 
