@@ -1,6 +1,6 @@
 using BudgetTrackerAPI.Models;
+using BudgetTrackerAPI.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
-using Azure.Security.KeyVault.Secrets;
 using Azure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,9 +35,24 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
-app.MapGet("api/budgets", async (BudgetTrackerContext db) =>
+// Define the GET /api/budgets endpoint
+app.MapGet("/api/budgets", async (BudgetTrackerContext db) =>
 {
-    return await db.Budgets.ToListAsync();
-});
+    var budgets = await db.Budgets.ToListAsync();
 
+    // Mapping the Budget model to BudgetDto
+    var budgetDtos = budgets.Select(b => new BudgetDto
+    {
+        BudgetId = b.BudgetId,
+        UserId = b.UserId,
+        Name = b.Name,
+        Amount = b.Amount,
+        Period = b.Period,
+        StartDate = b.StartDate,
+        EndDate = b.EndDate,
+        CreatedAt = b.CreatedAt
+    }).ToList();
+
+    return Results.Ok(budgetDtos);
+});
 app.Run();

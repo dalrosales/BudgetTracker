@@ -1,28 +1,37 @@
 using BudgetTracker.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BudgetTracker.Pages.Budgets
 {
-    public class BudgetsModel : PageModel
+    public class ManageModel : PageModel
     {
-        private readonly ILogger<BudgetsModel> _logger;
-        public List<BudgetItem> Budgets { get; set; } = new();
+        private readonly ILogger<ManageModel> _logger;
+        private readonly IConfiguration _config;
+        private readonly HttpClient _httpClient;
 
-        public BudgetsModel(ILogger<BudgetsModel> logger)
+        public List<BudgetDto> Budgets { get; set; } = new();
+
+        public ManageModel(ILogger<ManageModel> logger, IConfiguration config, IHttpClientFactory clientFactory)
         {
             _logger = logger;
+            _config = config;
+            _httpClient = clientFactory.CreateClient();
         }
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            // Sample Data
-            Budgets = new List<BudgetItem>
+            string apiUrl = _config["ApiBaseUrl"];
+            var response = await _httpClient.GetFromJsonAsync<List<BudgetDto>>($"{apiUrl}/api/budgets");
+
+            if (response != null)
             {
-                new() { Category = "Groceries", BudgetedAmount = 500, ActualAmount = 450 },
-                new() { Category = "Entertainment", BudgetedAmount = 200, ActualAmount = 250 },
-                new() { Category = "Rent", BudgetedAmount = 1500, ActualAmount = 1500 }
-            };
+                Budgets = response;
+            }
+            else
+            {
+                _logger.LogError("Failed to retrieve budgets from API.");
+            }
         }
     }
+
 }

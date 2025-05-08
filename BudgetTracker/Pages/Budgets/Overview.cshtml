@@ -1,5 +1,5 @@
 ﻿@page
-@model BudgetsModel
+@model OverviewModel
 @{
     ViewData["Title"] = "Budgets - Overview";
 }
@@ -44,8 +44,14 @@
             </div>
         </div>
     </div>
+    @foreach (var budget in Model.Budgets)
+    {
+        <p>@budget.Name</p>
+        <p>@budget.Amount</p>
+        <p>@budget.Period</p>
+        <p>@budget.StartDate</p>
+        <p>@budget.EndDate</p>
+        <p>@budget.CreatedAt</p>
+    }
 </div>
-@foreach (var budget in Model.Budgets)
-{
-    <partial name="_BudgetItem" model="budget" />
-}
+

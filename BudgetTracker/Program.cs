@@ -1,7 +1,13 @@
+using BudgetTracker.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Bind ApiSettings from configuration
+builder.Services.Configure<ApiSettings>(builder.Configuration.GetSection("ApiSettings"));
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 
