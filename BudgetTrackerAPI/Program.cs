@@ -2,6 +2,8 @@ using BudgetTrackerAPI.Models;
 using BudgetTrackerAPI.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,19 +13,12 @@ builder.Configuration.AddAzureKeyVault(
     new DefaultAzureCredential()
 );
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//// Add services to the container.
+//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 
-// Safely get the API Key
-var apiKey = builder.Configuration["BudgetTrackerAPIKey1"];
-if (string.IsNullOrWhiteSpace(apiKey))
-{
-    throw new InvalidOperationException("API key not found in Key Vault.");
-}
-
-// Safely get the connection string from configuration
+// Get connection string from Key Vault
 var connectionString = builder.Configuration["BudgetTrackerAPISecret1"];
 if (string.IsNullOrWhiteSpace(connectionString))
 {
@@ -34,30 +29,28 @@ builder.Services.AddDbContext<BudgetTrackerContext>(options =>
     options.UseSqlServer(connectionString)
 );
 
+// Add authentication and authorization with Azure AD
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = $"https://login.microsoftonline.com/{builder.Configuration["AzureAd:TenantId"]}";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["AzureAd:ClientId"]
+        };
+    });
+
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
-// Require API Key
-app.Use(async (context, next) =>
-{
-    // Only enforce API key check in non-development environments
-    if (!app.Environment.IsDevelopment())
-    {
-        var providedApiKey = context.Request.Headers["x-api-key"].FirstOrDefault();
+app.UseAuthentication();
+app.UseAuthorization();
 
-        if (string.IsNullOrWhiteSpace(providedApiKey) || providedApiKey != apiKey)
-        {
-            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
-            await context.Response.WriteAsync("Unauthorized: Missing or invalid API key.");
-            return;
-        }
-    }
-
-    await next();
-});
-
-// Configure the HTTP request pipeline.
-app.UseSwagger();
-app.UseSwaggerUI();
+//// Configure the HTTP request pipeline.
+//app.UseSwagger();
+//app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
@@ -80,5 +73,6 @@ app.MapGet("/api/budgets", async (BudgetTrackerContext db) =>
     }).ToList();
 
     return Results.Ok(budgetDtos);
-});
+}).RequireAuthorization();
+
 app.Run();
