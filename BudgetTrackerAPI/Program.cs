@@ -34,10 +34,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
         options.Authority = $"https://login.microsoftonline.com/{builder.Configuration["AzureAd:TenantId"]}";
+        options.Audience = builder.Configuration["AzureAd:ClientId"];
         options.TokenValidationParameters = new TokenValidationParameters
         {
+            ValidateIssuer = true,
+            ValidIssuer = $"https://login.microsoftonline.com/{builder.Configuration["AzureAd:TenantId"]}/v2.0",
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["AzureAd:ClientId"]
+            ValidAudience = builder.Configuration["AzureAd:ClientId"],
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero //Adjustment for token expiration tolerance
         };
     });
 
@@ -48,7 +53,7 @@ var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
 
-//// Configure the HTTP request pipeline.
+//// Enable Swagger for development
 //app.UseSwagger();
 //app.UseSwaggerUI();
 
