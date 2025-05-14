@@ -1,5 +1,5 @@
 # BudgetTracker 
-![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-5C2D91?style=for-the-badge&logo=aspdotnet&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Azure](https://img.shields.io/badge/microsoft%20azure-0089D6?style=for-the-badge&logo=microsoft-azure&logoColor=white) ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=Swagger&logoColor=white) ![npm](https://img.shields.io/badge/npm-8B7B47?style=for-the-badge&logo=npm&logoColor=white) 
+![ASP.NET Core](https://img.shields.io/badge/ASP.NET_Core-5C2D91?style=for-the-badge&logo=aspdotnet&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Azure](https://img.shields.io/badge/microsoft%20azure-0089D6?style=for-the-badge&logo=microsoft-azure&logoColor=white) ![npm](https://img.shields.io/badge/npm-8B7B47?style=for-the-badge&logo=npm&logoColor=white) 
 
 **BudgetTracker** is a personal finance web application that helps users create budgets, track income, manage expenses, and set financial goals. Designed for simplicity and flexibility, it allows users to break down spending into categories and subcategories, monitor progress visually, and stay in control of their finances.
 
@@ -14,7 +14,7 @@ This is a personal project under active development and iteration. Most features
 - Set and monitor savings or debt-reduction goals
 - View progress and insights through charts and dashboards
 
-## 📦Tech Stack
+## 📦 Tech Stack
 
 ### 🖥️ Frontend
 
@@ -26,23 +26,22 @@ This is a personal project under active development and iteration. Most features
 
 - `ASP.NET Core Web API` (`.NET 8`)
 - RESTful architecture
-- Business logic separated via service and data layers
+- Business logic organized into service and data layers
 - `Azure SQL Database`
 
 ### ☁️ Hosting
 
 - Frontend, API, and database hosted on `Microsoft Azure`
-- Environment variables managed securely via Azure
+- Sensitive settings and connection strings are secured via Azure services
 
-### 🧱  Dependencies
+### 🧱 Dependencies
 
 BudgetTracker relies on the following major libraries and frameworks:
 
 - `ASP.NET Core` (`.NET 8`) — Backend web framework
 - `Razor Pages` — Simplified server-side UI rendering
-- `Flowbite` — Tailwind CSS component library for UI components
+- `Flowbite` — Tailwind CSS component library
 - `Tailwind CSS` — Utility-first CSS framework
-- `Swagger` — API documentation and testing interface
 - `Azure SQL Database` — Cloud-hosted relational database
 
 All third-party packages and frameworks are credited to their respective authors and used in compliance with their open-source licenses.

@@ -13,11 +13,6 @@ builder.Configuration.AddAzureKeyVault(
     new DefaultAzureCredential()
 );
 
-//// Add services to the container.
-//// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
 // Get connection string from Key Vault
 var connectionString = builder.Configuration["BudgetTrackerAPISecret1"];
 if (string.IsNullOrWhiteSpace(connectionString))
@@ -30,19 +25,27 @@ builder.Services.AddDbContext<BudgetTrackerContext>(options =>
 );
 
 // Add authentication and authorization with Azure AD
+var tenantId = builder.Configuration["AzureAd:TenantId"];
+var clientId = builder.Configuration["AzureAd:ClientId"];
+
+if (string.IsNullOrEmpty(tenantId) || string.IsNullOrEmpty(clientId))
+{
+    throw new InvalidOperationException("Missing AzureAd:TenantId or AzureAd:ClientId in configuration.");
+}
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = $"https://login.microsoftonline.com/{builder.Configuration["AzureAd:TenantId"]}";
-        options.Audience = builder.Configuration["AzureAd:ClientId"];
+        options.Authority = $"https://login.microsoftonline.com/{tenantId}";
+        options.Audience = clientId;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = $"https://login.microsoftonline.com/{builder.Configuration["AzureAd:TenantId"]}/v2.0",
+            ValidIssuer = $"https://login.microsoftonline.com/{tenantId}/v2.0",
             ValidateAudience = true,
-            ValidAudience = builder.Configuration["AzureAd:ClientId"],
+            ValidAudience = clientId,
             ValidateLifetime = true,
-            ClockSkew = TimeSpan.Zero //Adjustment for token expiration tolerance
+            ClockSkew = TimeSpan.Zero
         };
     });
 
@@ -50,21 +53,21 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-app.UseAuthentication();
-app.UseAuthorization();
-
-//// Enable Swagger for development
-//app.UseSwagger();
-//app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Define the GET /api/budgets endpoint
 app.MapGet("/api/budgets", async (BudgetTrackerContext db) =>
 {
     var budgets = await db.Budgets.ToListAsync();
 
-    // Mapping the Budget model to BudgetDto
     var budgetDtos = budgets.Select(b => new BudgetDto
     {
         BudgetId = b.BudgetId,
