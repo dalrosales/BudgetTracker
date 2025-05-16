@@ -33,6 +33,8 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<Budget>(entity =>
         {
             entity.HasKey(e => e.BudgetId).HasName("PK__Budgets__E38E79C4431B33D5");

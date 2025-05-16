@@ -1,13 +1,15 @@
 ﻿using BudgetTrackerAPI.Models;
 using BudgetTrackerAPI.Models.DTOs;
 using BudgetTrackerAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BudgetTrackerAPI.Controllers
 {
     [ApiController]
-    [Route("api/controller")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -22,15 +24,35 @@ namespace BudgetTrackerAPI.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        [AllowAnonymous]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest model)
         {
-            var user = new ApplicationUser { UserName = dto.Email, Email = dto.Email };
-            var result = await _userManager.CreateAsync(user, dto.Password);
+            try
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email
+                };
 
-            if (result.Succeeded)
-                return Ok();
+                var result = await _userManager.CreateAsync(user, model.Password);
 
-            return BadRequest(result.Errors);
+                if (!result.Succeeded)
+                {
+                    return BadRequest(result.Errors);
+                }
+
+                return StatusCode(201);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    message = "Registration failed.",
+                    error = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
         }
 
         [HttpPost("login")]

@@ -33,7 +33,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<BudgetTrackerContext>()
     .AddDefaultTokenProviders();
 
-var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>() ?? new JwtSettings();
 jwtSettings.SecretKey = builder.Configuration["JwtSecretKey"]; // from Azure Key Vault
 
 builder.Services.Configure<JwtSettings>(options =>
