@@ -1,9 +1,12 @@
 using BudgetTrackerAPI.Models;
-using BudgetTrackerAPI.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
 using Azure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using BudgetTrackerAPI.Interfaces;
+using BudgetTrackerAPI.Repositories;
+using BudgetTrackerAPI.Services;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,32 +27,48 @@ builder.Services.AddDbContext<BudgetTrackerContext>(options =>
     options.UseSqlServer(connectionString)
 );
 
-// Add authentication and authorization with Azure AD
-var tenantId = builder.Configuration["AzureAd:TenantId"];
-var clientId = builder.Configuration["AzureAd:ClientId"];
+builder.Services.AddAuthorization();
 
-if (string.IsNullOrEmpty(tenantId) || string.IsNullOrEmpty(clientId))
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<BudgetTrackerContext>()
+    .AddDefaultTokenProviders();
+
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>();
+jwtSettings.SecretKey = builder.Configuration["JwtSecretKey"]; // from Azure Key Vault
+
+builder.Services.Configure<JwtSettings>(options =>
 {
-    throw new InvalidOperationException("Missing AzureAd:TenantId or AzureAd:ClientId in configuration.");
-}
+    options.SecretKey = jwtSettings.SecretKey;
+    options.Issuer = jwtSettings.Issuer;
+    options.Audience = jwtSettings.Audience;
+    options.ExpiryMinutes = jwtSettings.ExpiryMinutes;
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        options.Authority = $"https://login.microsoftonline.com/{tenantId}";
-        options.Audience = clientId;
+        options.RequireHttpsMetadata = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
-            ValidIssuer = $"https://login.microsoftonline.com/{tenantId}/v2.0",
             ValidateAudience = true,
-            ValidAudience = clientId,
             ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(jwtSettings.SecretKey)
+            ),
             ClockSkew = TimeSpan.Zero
         };
     });
 
-builder.Services.AddAuthorization();
+//Add interfaces and services
+builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
+builder.Services.AddScoped<IBudgetService, BudgetService>();
+builder.Services.AddScoped<AuthService>();
+
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -63,24 +82,6 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Define the GET /api/budgets endpoint
-app.MapGet("/api/budgets", async (BudgetTrackerContext db) =>
-{
-    var budgets = await db.Budgets.ToListAsync();
-
-    var budgetDtos = budgets.Select(b => new BudgetDto
-    {
-        BudgetId = b.BudgetId,
-        UserId = b.UserId,
-        Name = b.Name,
-        Amount = b.Amount,
-        Period = b.Period,
-        StartDate = b.StartDate,
-        EndDate = b.EndDate,
-        CreatedAt = b.CreatedAt
-    }).ToList();
-
-    return Results.Ok(budgetDtos);
-}).RequireAuthorization();
+app.MapControllers();
 
 app.Run();
