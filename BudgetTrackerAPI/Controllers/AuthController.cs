@@ -42,7 +42,10 @@ namespace BudgetTrackerAPI.Controllers
                     return BadRequest(result.Errors);
                 }
 
-                return StatusCode(201);
+                // Automatically sign in by generating a JWT
+                var token = _authService.GenerateToken(user); // Make sure this method exists
+
+                return Ok(new { Token = token });
             }
             catch (Exception ex)
             {
