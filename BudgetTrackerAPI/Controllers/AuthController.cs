@@ -43,7 +43,7 @@ namespace BudgetTrackerAPI.Controllers
                 }
 
                 // Automatically sign in by generating a JWT
-                var token = _authService.GenerateToken(user); // Make sure this method exists
+                var token = _authService.GenerateToken(user);
 
                 return Ok(new { Token = token });
             }
