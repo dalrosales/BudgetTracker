@@ -1,4 +1,4 @@
-name: BudgetTrackerAPI - Build and deploy to Azure Web App service
+name: BudgetTrackerAPI - Build and deploy to Azure app service
 
 on:
   push:
