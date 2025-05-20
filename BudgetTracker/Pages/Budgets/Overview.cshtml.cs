@@ -1,5 +1,8 @@
+using BudgetTracker.Helpers;
 using BudgetTracker.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net.Http.Headers;
 
 namespace BudgetTracker.Pages.Budgets
 {
@@ -18,19 +21,37 @@ namespace BudgetTracker.Pages.Budgets
             _httpClient = clientFactory.CreateClient();
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            string apiUrl = _config["ApiSettings:BaseUrl"];
-            var response = await _httpClient.GetFromJsonAsync<List<BudgetDto>>($"{apiUrl}/api/budgets");
+            var token = User.GetJwtToken();
+            if (string.IsNullOrEmpty(token))
+            {
+                _logger.LogWarning("JWT token not found in user claims.");
+                return RedirectToPage("/Account/Login");
+            }
 
-            if (response != null)
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            try
             {
-                Budgets = response;
+                string apiUrl = $"{_config["ApiBaseUrl"]}/budgets";
+                var response = await _httpClient.GetFromJsonAsync<List<BudgetDto>>(apiUrl);
+
+                if (response != null)
+                {
+                    Budgets = response;
+                }
+                else
+                {
+                    _logger.LogError("Failed to load budgets.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogError("Failed to retrieve budgets from API.");
+                _logger.LogError(ex, "Error retrieving budgets.");
             }
+
+            return Page();
         }
     }
 }

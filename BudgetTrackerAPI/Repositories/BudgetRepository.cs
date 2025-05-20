@@ -13,7 +13,7 @@ namespace BudgetTrackerAPI.Repositories
             _context = context;
         }
 
-        public async Task<List<Budget>> GetBudgetsByUserIdAsync(Guid userId)
+        public async Task<List<Budget>> GetBudgetsByUserIdAsync(string userId)
         {
             return await _context.Budgets
                 .Where(b => b.UserId == userId)
@@ -28,6 +28,12 @@ namespace BudgetTrackerAPI.Repositories
         public async Task AddBudgetAsync(Budget budget)
         {
             await _context.Budgets.AddAsync(budget);
+        }
+
+        public Task UpdateBudgetAsync(Budget budget)
+        {
+            _context.Budgets.Update(budget);
+            return Task.CompletedTask;
         }
 
         public async Task DeleteBudgetAsync(Guid id)

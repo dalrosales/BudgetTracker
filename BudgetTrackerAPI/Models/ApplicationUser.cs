@@ -4,6 +4,6 @@ namespace BudgetTrackerAPI.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        //Extend later...
+        public ICollection<Budget> Budgets { get; set; }
     }
 }

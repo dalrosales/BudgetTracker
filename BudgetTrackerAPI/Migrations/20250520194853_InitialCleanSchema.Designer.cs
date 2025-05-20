@@ -4,6 +4,7 @@ using BudgetTrackerAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetTrackerAPI.Migrations
 {
     [DbContext(typeof(BudgetTrackerContext))]
-    partial class BudgetTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20250520194853_InitialCleanSchema")]
+    partial class InitialCleanSchema
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,10 +98,7 @@ namespace BudgetTrackerAPI.Migrations
                         .HasColumnName("BudgetID")
                         .HasDefaultValueSql("(newsequentialid())");
 
-                    b.Property<decimal>("ActualAmount")
-                        .HasColumnType("decimal(10,2)");
-
-                    b.Property<decimal>("BudgetedAmount")
+                    b.Property<decimal>("Amount")
                         .HasColumnType("decimal(10, 2)");
 
                     b.Property<DateTime?>("CreatedAt")

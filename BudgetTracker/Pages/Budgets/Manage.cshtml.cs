@@ -1,37 +1,60 @@
+using BudgetTracker.Helpers;
 using BudgetTracker.Models;
+using BudgetTracker.Models.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Net.Http.Headers;
 
 namespace BudgetTracker.Pages.Budgets
 {
     public class ManageModel : PageModel
     {
+        private readonly IHttpClientFactory _clientFactory;
         private readonly ILogger<ManageModel> _logger;
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
+        
+        public List<BudgetSummaryViewModel> Budgets { get; set; }
 
-        public List<BudgetDto> Budgets { get; set; } = new();
-
-        public ManageModel(ILogger<ManageModel> logger, IConfiguration config, IHttpClientFactory clientFactory)
+        public ManageModel(IHttpClientFactory clientFactory, IConfiguration config, ILogger<ManageModel> logger)
         {
+            _clientFactory = clientFactory;
             _logger = logger;
             _config = config;
             _httpClient = clientFactory.CreateClient();
         }
 
-        public async Task OnGetAsync()
+        public async Task<IActionResult> OnGetAsync()
         {
-            string apiUrl = _config["ApiBaseUrl"];
-            var response = await _httpClient.GetFromJsonAsync<List<BudgetDto>>($"{apiUrl}/api/budgets");
+            var token = User.GetJwtToken();
+            if (string.IsNullOrEmpty(token))
+            {
+                _logger.LogWarning("JWT token not found in user claims.");
+                return RedirectToPage("/Account/Login");
+            }
 
-            if (response != null)
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            try
             {
-                Budgets = response;
+                string apiUrl = $"{_config["ApiBaseUrl"]}/budgets";
+                var response = await _httpClient.GetFromJsonAsync<List<BudgetSummaryViewModel>>(apiUrl);
+
+                if (response != null)
+                {
+                    Budgets = response ?? new List<BudgetSummaryViewModel>();
+                }
+                else
+                {
+                    _logger.LogError("Failed to load budgets.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogError("Failed to retrieve budgets from API.");
+                _logger.LogError(ex, "Error retrieving budgets.");
             }
+
+            return Page();
         }
     }
-
 }

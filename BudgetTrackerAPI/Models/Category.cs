@@ -9,21 +9,11 @@ public partial class Category
 {
     public Guid CategoryId { get; set; }
 
-    public Guid BudgetId { get; set; }
-
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
 
     public string Name { get; set; }
 
-    public decimal Budgeted { get; set; }
-
-    public decimal Actual { get; set; }
-
     public DateTime? CreatedAt { get; set; }
 
-    public virtual Budget Budget { get; set; }
-
     public virtual ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
-
-    public virtual User User { get; set; }
 }

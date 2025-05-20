@@ -1,7 +1,6 @@
 ﻿using BudgetTrackerAPI.Interfaces;
 using BudgetTrackerAPI.Models;
 using BudgetTrackerAPI.Models.DTOs;
-using BudgetTrackerAPI.Repositories;
 
 namespace BudgetTrackerAPI.Services
 {
@@ -14,15 +13,16 @@ namespace BudgetTrackerAPI.Services
             _repo = repo;
         }
 
-        public async Task<List<BudgetDto>> GetUserBudgets(Guid userId)
+        public async Task<List<BudgetSummaryDto>> GetUserBudgets(string userId)
         {
             var budgets = await _repo.GetBudgetsByUserIdAsync(userId);
 
-            return budgets.Select(b => new BudgetDto
+            return budgets.Select(b => new BudgetSummaryDto
             {
                 BudgetId = b.BudgetId,
                 Name = b.Name,
-                Amount = b.Amount,
+                BudgetedAmount = b.BudgetedAmount,
+                ActualAmount = b.ActualAmount,
                 Period = b.Period,
                 StartDate = b.StartDate,
                 EndDate = b.EndDate,
@@ -38,6 +38,12 @@ namespace BudgetTrackerAPI.Services
         public async Task CreateBudget(Budget budget)
         {
             await _repo.AddBudgetAsync(budget);
+            await _repo.SaveChangesAsync();
+        }
+
+        public async Task UpdateBudget(Budget budget)
+        {
+            await _repo.UpdateBudgetAsync(budget);
             await _repo.SaveChangesAsync();
         }
 

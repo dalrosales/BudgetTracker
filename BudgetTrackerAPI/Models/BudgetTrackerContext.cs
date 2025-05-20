@@ -1,15 +1,10 @@
-﻿#nullable disable
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace BudgetTrackerAPI.Models;
 
 public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
 {
-    public BudgetTrackerContext()
-    {
-    }
-
     public BudgetTrackerContext(DbContextOptions<BudgetTrackerContext> options)
         : base(options)
     {
@@ -25,26 +20,21 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
 
     public virtual DbSet<Transaction> Transactions { get; set; }
 
-    public virtual DbSet<User> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         modelBuilder.Entity<Budget>(entity =>
         {
-            entity.HasKey(e => e.BudgetId).HasName("PK__Budgets__E38E79C4431B33D5");
+            entity.HasKey(e => e.BudgetId).HasName("PK__Budgets__E38E79C49C614B35");
 
             entity.HasIndex(e => new { e.UserId, e.Name }, "UQ_Budgets_Name").IsUnique();
 
             entity.Property(e => e.BudgetId)
                 .HasDefaultValueSql("(newsequentialid())")
                 .HasColumnName("BudgetID");
-            entity.Property(e => e.Amount).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.BudgetedAmount).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.ActualAmount).HasColumnType("decimal(10,2)");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -56,12 +46,15 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
                 .IsRequired()
                 .HasMaxLength(50);
             entity.Property(e => e.StartDate).HasColumnType("datetime");
-            entity.Property(e => e.UserId).HasColumnName("UserID");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Budgets)
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450)
+                .HasColumnName("UserID");
+            entity.HasOne(d => d.User)
+                .WithMany(u => u.Budgets)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Budgets_User");
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Budget_User");
         });
 
         modelBuilder.Entity<BudgetView>(entity =>
@@ -80,36 +73,28 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A2BEAFA9CCF");
+            entity.HasKey(e => e.CategoryId).HasName("PK__Categori__19093A2BA9FE0CEE");
 
-            entity.HasIndex(e => new { e.BudgetId, e.Name }, "UQ_Categories_Name").IsUnique();
+            entity.HasIndex(e => new { e.UserId, e.Name }, "UQ_Categories_Name").IsUnique();
 
             entity.Property(e => e.CategoryId)
                 .HasDefaultValueSql("(newsequentialid())")
                 .HasColumnName("CategoryID");
-            entity.Property(e => e.Actual).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.BudgetId).HasColumnName("BudgetID");
-            entity.Property(e => e.Budgeted).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(100);
-            entity.Property(e => e.UserId).HasColumnName("UserID");
-
-            entity.HasOne(d => d.Budget).WithMany(p => p.Categories)
-                .HasForeignKey(d => d.BudgetId)
-                .HasConstraintName("FK_Categories_Budget");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Categories)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_Categories_User");
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450)
+                .HasColumnName("UserID");
         });
 
         modelBuilder.Entity<Goal>(entity =>
         {
-            entity.HasKey(e => e.GoalId).HasName("PK__Goals__8A4FFF31C7A4B00F");
+            entity.HasKey(e => e.GoalId).HasName("PK__Goals__8A4FFF316B676EE2");
 
             entity.HasIndex(e => new { e.UserId, e.Name }, "UQ_Goals_Name").IsUnique();
 
@@ -128,17 +113,15 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
                 .HasColumnType("decimal(10, 2)");
             entity.Property(e => e.StartDate).HasColumnType("datetime");
             entity.Property(e => e.TargetAmount).HasColumnType("decimal(10, 2)");
-            entity.Property(e => e.UserId).HasColumnName("UserID");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Goals)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Goals_User");
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450)
+                .HasColumnName("UserID");
         });
 
         modelBuilder.Entity<Transaction>(entity =>
         {
-            entity.HasKey(e => e.TransactionId).HasName("PK__Transact__55433A4B2A8FBE7B");
+            entity.HasKey(e => e.TransactionId).HasName("PK__Transact__55433A4B8FA1B332");
 
             entity.Property(e => e.TransactionId)
                 .HasDefaultValueSql("(newsequentialid())")
@@ -150,42 +133,15 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
                 .HasColumnType("datetime");
             entity.Property(e => e.Description).HasMaxLength(255);
             entity.Property(e => e.TransactionDate).HasColumnType("datetime");
-            entity.Property(e => e.UserId).HasColumnName("UserID");
+            entity.Property(e => e.UserId)
+                .IsRequired()
+                .HasMaxLength(450)
+                .HasColumnName("UserID");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Transactions)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Transactions_Category");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Transactions)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Transactions_User");
-        });
-
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.HasKey(e => e.UserId).HasName("PK__Users__1788CCAC5B20C1F6");
-
-            entity.HasIndex(e => e.Username, "UQ__Users__536C85E400615A53").IsUnique();
-
-            entity.HasIndex(e => e.Email, "UQ__Users__A9D1053422A702FA").IsUnique();
-
-            entity.Property(e => e.UserId)
-                .HasDefaultValueSql("(newsequentialid())")
-                .HasColumnName("UserID");
-            entity.Property(e => e.CreatedAt)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime");
-            entity.Property(e => e.Email)
-                .IsRequired()
-                .HasMaxLength(100);
-            entity.Property(e => e.PasswordHash)
-                .IsRequired()
-                .HasMaxLength(255);
-            entity.Property(e => e.Username)
-                .IsRequired()
-                .HasMaxLength(50);
         });
 
         OnModelCreatingPartial(modelBuilder);
