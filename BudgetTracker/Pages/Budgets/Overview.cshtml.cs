@@ -1,5 +1,5 @@
 using BudgetTracker.Helpers;
-using BudgetTracker.Models;
+using BudgetTracker.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Headers;
@@ -12,7 +12,7 @@ namespace BudgetTracker.Pages.Budgets
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
 
-        public List<BudgetDto> Budgets { get; set; } = new();
+        public List<BudgetSummaryViewModel> Budgets { get; set; } = new();
 
         public OverviewModel(ILogger<OverviewModel> logger, IConfiguration config, IHttpClientFactory clientFactory)
         {
@@ -35,7 +35,7 @@ namespace BudgetTracker.Pages.Budgets
             try
             {
                 string apiUrl = $"{_config["ApiBaseUrl"]}/budgets";
-                var response = await _httpClient.GetFromJsonAsync<List<BudgetDto>>(apiUrl);
+                var response = await _httpClient.GetFromJsonAsync<List<BudgetSummaryViewModel>>(apiUrl);
 
                 if (response != null)
                 {

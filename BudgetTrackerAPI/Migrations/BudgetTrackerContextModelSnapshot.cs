@@ -129,7 +129,7 @@ namespace BudgetTrackerAPI.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("BudgetId")
-                        .HasName("PK__Budgets__E38E79C49C614B35");
+                        .HasName("PK_Budgets");
 
                     b.HasIndex(new[] { "UserId", "Name" }, "UQ_Budgets_Name")
                         .IsUnique();
@@ -184,7 +184,7 @@ namespace BudgetTrackerAPI.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("CategoryId")
-                        .HasName("PK__Categori__19093A2BA9FE0CEE");
+                        .HasName("PK_Categories");
 
                     b.HasIndex(new[] { "UserId", "Name" }, "UQ_Categories_Name")
                         .IsUnique();
@@ -231,7 +231,7 @@ namespace BudgetTrackerAPI.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("GoalId")
-                        .HasName("PK__Goals__8A4FFF316B676EE2");
+                        .HasName("PK_Goals");
 
                     b.HasIndex(new[] { "UserId", "Name" }, "UQ_Goals_Name")
                         .IsUnique();
@@ -273,7 +273,7 @@ namespace BudgetTrackerAPI.Migrations
                         .HasColumnName("UserID");
 
                     b.HasKey("TransactionId")
-                        .HasName("PK__Transact__55433A4B8FA1B332");
+                        .HasName("PK_Transactions");
 
                     b.HasIndex("CategoryId");
 
@@ -420,7 +420,7 @@ namespace BudgetTrackerAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_Budget_User");
+                        .HasConstraintName("FK_Budgets_AspNetUsers");
 
                     b.Navigation("User");
                 });

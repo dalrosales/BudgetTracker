@@ -27,8 +27,6 @@ builder.Services.AddDbContext<BudgetTrackerContext>(options =>
     options.UseSqlServer(connectionString)
 );
 
-builder.Services.AddAuthorization();
-
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<BudgetTrackerContext>()
     .AddDefaultTokenProviders();
@@ -62,6 +60,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ClockSkew = TimeSpan.Zero
         };
     });
+builder.Services.AddAuthorization();
 
 //Add interfaces and services
 builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();

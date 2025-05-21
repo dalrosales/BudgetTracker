@@ -51,18 +51,35 @@ namespace BudgetTrackerAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
+                name: "Categories",
                 columns: table => new
                 {
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newsequentialid())"),
-                    Username = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    CategoryID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newsequentialid())"),
+                    UserID = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Users__1788CCAC5B20C1F6", x => x.UserID);
+                    table.PrimaryKey("PK_Categories", x => x.CategoryID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Goals",
+                columns: table => new
+                {
+                    GoalID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newsequentialid())"),
+                    UserID = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    TargetAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    SavedAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: true, defaultValue: 0m),
+                    StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Goals", x => x.GoalID);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,9 +193,10 @@ namespace BudgetTrackerAPI.Migrations
                 columns: table => new
                 {
                     BudgetID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newsequentialid())"),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    BudgetedAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    ActualAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Period = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime", nullable: true),
@@ -186,63 +204,12 @@ namespace BudgetTrackerAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Budgets__E38E79C4431B33D5", x => x.BudgetID);
+                    table.PrimaryKey("PK_Budgets", x => x.BudgetID);
                     table.ForeignKey(
-                        name: "FK_Budgets_User",
+                        name: "FK_Budgets_AspNetUsers",
                         column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Goals",
-                columns: table => new
-                {
-                    GoalID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newsequentialid())"),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    TargetAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    SavedAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: true, defaultValue: 0m),
-                    StartDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime", nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Goals__8A4FFF31C7A4B00F", x => x.GoalID);
-                    table.ForeignKey(
-                        name: "FK_Goals_User",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
-                {
-                    CategoryID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newsequentialid())"),
-                    BudgetID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Budgeted = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    Actual = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Categori__19093A2BEAFA9CCF", x => x.CategoryID);
-                    table.ForeignKey(
-                        name: "FK_Categories_Budget",
-                        column: x => x.BudgetID,
-                        principalTable: "Budgets",
-                        principalColumn: "BudgetID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Categories_User",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID",
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -251,7 +218,7 @@ namespace BudgetTrackerAPI.Migrations
                 columns: table => new
                 {
                     TransactionID = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "(newsequentialid())"),
-                    UserID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserID = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
                     CategoryID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Amount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     TransactionDate = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -260,17 +227,12 @@ namespace BudgetTrackerAPI.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Transact__55433A4B2A8FBE7B", x => x.TransactionID);
+                    table.PrimaryKey("PK_Transactions", x => x.TransactionID);
                     table.ForeignKey(
                         name: "FK_Transactions_Category",
                         column: x => x.CategoryID,
                         principalTable: "Categories",
                         principalColumn: "CategoryID");
-                    table.ForeignKey(
-                        name: "FK_Transactions_User",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -319,14 +281,9 @@ namespace BudgetTrackerAPI.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_UserID",
-                table: "Categories",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
                 name: "UQ_Categories_Name",
                 table: "Categories",
-                columns: new[] { "BudgetID", "Name" },
+                columns: new[] { "UserID", "Name" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -339,23 +296,6 @@ namespace BudgetTrackerAPI.Migrations
                 name: "IX_Transactions_CategoryID",
                 table: "Transactions",
                 column: "CategoryID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Transactions_UserID",
-                table: "Transactions",
-                column: "UserID");
-
-            migrationBuilder.CreateIndex(
-                name: "UQ__Users__536C85E400615A53",
-                table: "Users",
-                column: "Username",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "UQ__Users__A9D1053422A702FA",
-                table: "Users",
-                column: "Email",
-                unique: true);
         }
 
         /// <inheritdoc />
@@ -377,6 +317,9 @@ namespace BudgetTrackerAPI.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Budgets");
+
+            migrationBuilder.DropTable(
                 name: "Goals");
 
             migrationBuilder.DropTable(
@@ -390,12 +333,6 @@ namespace BudgetTrackerAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Budgets");
-
-            migrationBuilder.DropTable(
-                name: "Users");
         }
     }
 }

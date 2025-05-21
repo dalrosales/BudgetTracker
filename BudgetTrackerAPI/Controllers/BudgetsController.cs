@@ -1,6 +1,7 @@
 ﻿using BudgetTrackerAPI.Interfaces;
 using BudgetTrackerAPI.Models;
 using BudgetTrackerAPI.Models.DTOs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,7 +10,7 @@ namespace BudgetTrackerAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class BudgetsController : ControllerBase
     {
         private readonly IBudgetService _budgetService;
@@ -49,7 +50,7 @@ namespace BudgetTrackerAPI.Controllers
                 UserId = userId,
                 Name = createDto.Name,
                 BudgetedAmount = createDto.BudgetedAmount,
-                ActualAmount = createDto.AcutalAmount,
+                ActualAmount = createDto.ActualAmount,
                 Period = createDto.Period,
                 StartDate = createDto.StartDate,
                 EndDate = createDto.EndDate,

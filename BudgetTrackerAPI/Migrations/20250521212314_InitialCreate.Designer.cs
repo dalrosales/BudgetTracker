@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetTrackerAPI.Migrations
 {
     [DbContext(typeof(BudgetTrackerContext))]
-    [Migration("20250516183252_InitialCreate")]
+    [Migration("20250521212314_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -98,7 +98,10 @@ namespace BudgetTrackerAPI.Migrations
                         .HasColumnName("BudgetID")
                         .HasDefaultValueSql("(newsequentialid())");
 
-                    b.Property<decimal>("Amount")
+                    b.Property<decimal>("ActualAmount")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("BudgetedAmount")
                         .HasColumnType("decimal(10, 2)");
 
                     b.Property<DateTime?>("CreatedAt")
@@ -122,12 +125,14 @@ namespace BudgetTrackerAPI.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("UserID");
 
                     b.HasKey("BudgetId")
-                        .HasName("PK__Budgets__E38E79C4431B33D5");
+                        .HasName("PK_Budgets");
 
                     b.HasIndex(new[] { "UserId", "Name" }, "UQ_Budgets_Name")
                         .IsUnique();
@@ -165,16 +170,6 @@ namespace BudgetTrackerAPI.Migrations
                         .HasColumnName("CategoryID")
                         .HasDefaultValueSql("(newsequentialid())");
 
-                    b.Property<decimal>("Actual")
-                        .HasColumnType("decimal(10, 2)");
-
-                    b.Property<Guid>("BudgetId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("BudgetID");
-
-                    b.Property<decimal>("Budgeted")
-                        .HasColumnType("decimal(10, 2)");
-
                     b.Property<DateTime?>("CreatedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
@@ -185,16 +180,16 @@ namespace BudgetTrackerAPI.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("UserID");
 
                     b.HasKey("CategoryId")
-                        .HasName("PK__Categori__19093A2BEAFA9CCF");
+                        .HasName("PK_Categories");
 
-                    b.HasIndex("UserId");
-
-                    b.HasIndex(new[] { "BudgetId", "Name" }, "UQ_Categories_Name")
+                    b.HasIndex(new[] { "UserId", "Name" }, "UQ_Categories_Name")
                         .IsUnique();
 
                     b.ToTable("Categories");
@@ -232,12 +227,14 @@ namespace BudgetTrackerAPI.Migrations
                     b.Property<decimal>("TargetAmount")
                         .HasColumnType("decimal(10, 2)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("UserID");
 
                     b.HasKey("GoalId")
-                        .HasName("PK__Goals__8A4FFF31C7A4B00F");
+                        .HasName("PK_Goals");
 
                     b.HasIndex(new[] { "UserId", "Name" }, "UQ_Goals_Name")
                         .IsUnique();
@@ -272,58 +269,18 @@ namespace BudgetTrackerAPI.Migrations
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier")
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)")
                         .HasColumnName("UserID");
 
                     b.HasKey("TransactionId")
-                        .HasName("PK__Transact__55433A4B2A8FBE7B");
+                        .HasName("PK_Transactions");
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Transactions");
-                });
-
-            modelBuilder.Entity("BudgetTrackerAPI.Models.User", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("UserID")
-                        .HasDefaultValueSql("(newsequentialid())");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime")
-                        .HasDefaultValueSql("(getdate())");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PasswordHash")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("UserId")
-                        .HasName("PK__Users__1788CCAC5B20C1F6");
-
-                    b.HasIndex(new[] { "Username" }, "UQ__Users__536C85E400615A53")
-                        .IsUnique();
-
-                    b.HasIndex(new[] { "Email" }, "UQ__Users__A9D1053422A702FA")
-                        .IsUnique();
-
-                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -461,43 +418,12 @@ namespace BudgetTrackerAPI.Migrations
 
             modelBuilder.Entity("BudgetTrackerAPI.Models.Budget", b =>
                 {
-                    b.HasOne("BudgetTrackerAPI.Models.User", "User")
+                    b.HasOne("BudgetTrackerAPI.Models.ApplicationUser", "User")
                         .WithMany("Budgets")
                         .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Budgets_User");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BudgetTrackerAPI.Models.Category", b =>
-                {
-                    b.HasOne("BudgetTrackerAPI.Models.Budget", "Budget")
-                        .WithMany("Categories")
-                        .HasForeignKey("BudgetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_Categories_Budget");
-
-                    b.HasOne("BudgetTrackerAPI.Models.User", "User")
-                        .WithMany("Categories")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Categories_User");
-
-                    b.Navigation("Budget");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BudgetTrackerAPI.Models.Goal", b =>
-                {
-                    b.HasOne("BudgetTrackerAPI.Models.User", "User")
-                        .WithMany("Goals")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Goals_User");
+                        .HasConstraintName("FK_Budgets_AspNetUsers");
 
                     b.Navigation("User");
                 });
@@ -510,15 +436,7 @@ namespace BudgetTrackerAPI.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Transactions_Category");
 
-                    b.HasOne("BudgetTrackerAPI.Models.User", "User")
-                        .WithMany("Transactions")
-                        .HasForeignKey("UserId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Transactions_User");
-
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -572,24 +490,13 @@ namespace BudgetTrackerAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BudgetTrackerAPI.Models.Budget", b =>
+            modelBuilder.Entity("BudgetTrackerAPI.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Categories");
+                    b.Navigation("Budgets");
                 });
 
             modelBuilder.Entity("BudgetTrackerAPI.Models.Category", b =>
                 {
-                    b.Navigation("Transactions");
-                });
-
-            modelBuilder.Entity("BudgetTrackerAPI.Models.User", b =>
-                {
-                    b.Navigation("Budgets");
-
-                    b.Navigation("Categories");
-
-                    b.Navigation("Goals");
-
                     b.Navigation("Transactions");
                 });
 #pragma warning restore 612, 618
