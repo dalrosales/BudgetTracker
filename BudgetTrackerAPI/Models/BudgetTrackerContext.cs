@@ -27,6 +27,7 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
         modelBuilder.Entity<Budget>(entity =>
         {
             entity.HasKey(e => e.BudgetId).HasName("PK_Budgets");
+
             entity.HasIndex(e => new { e.UserId, e.Name }, "UQ_Budgets_Name").IsUnique();
 
             entity.Property(e => e.BudgetId)
@@ -42,7 +43,7 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
                 .IsRequired()
                 .HasMaxLength(100);
             
-            entity.Property(e => e.BudgetedAmount).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.BudgetedAmount).HasColumnType("decimal(10,2)");
             entity.Property(e => e.ActualAmount).HasColumnType("decimal(10,2)");
 
             entity.Property(e => e.Period)
@@ -98,18 +99,32 @@ public partial class BudgetTrackerContext : IdentityDbContext<ApplicationUser>
                 .HasMaxLength(450)
                 .HasColumnName("UserID");
 
+            entity.Property(e => e.BudgetId)
+                .IsRequired()
+                .HasColumnName("BudgetID");
+
             entity.Property(e => e.Name)
                 .IsRequired()
                 .HasMaxLength(100);
 
+            entity.Property(e => e.BudgetedAmount).HasColumnType("decimal(10,2)");
+            entity.Property(e => e.ActualAmount).HasColumnType("decimal(10,2)");
+
             entity.Property(e => e.CreatedAt)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+
+            entity.HasOne(c => c.Budget)
+                .WithMany(b => b.Categories)
+                .HasForeignKey(c => c.BudgetId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Categories_Budgets");
         });
 
         modelBuilder.Entity<Goal>(entity =>
         {
             entity.HasKey(e => e.GoalId).HasName("PK_Goals");
+            
             entity.HasIndex(e => new { e.UserId, e.Name }, "UQ_Goals_Name").IsUnique();
 
             entity.Property(e => e.GoalId)
