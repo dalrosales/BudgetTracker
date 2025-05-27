@@ -73,7 +73,7 @@ namespace BudgetTracker.Pages
 
             _logger.LogInformation($"User '{Email}' logged in successfully.");
 
-            return RedirectToPage("/Home");
+            return RedirectToPage("/Dashboard");
         }
 
         public class TokenResponse

@@ -1,21 +1,24 @@
 using BudgetTracker.Helpers;
+using BudgetTracker.Models;
 using BudgetTracker.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Headers;
 
-namespace BudgetTracker.Pages.Budgets
+namespace BudgetTracker.Pages
 {
-    public class OverviewModel : PageModel
+    public class BudgetsModel : PageModel
     {
-        private readonly ILogger<OverviewModel> _logger;
+        private readonly IHttpClientFactory _clientFactory;
+        private readonly ILogger<BudgetsModel> _logger;
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
 
-        public List<BudgetSummaryViewModel> Budgets { get; set; } = new();
+        public List<BudgetSummaryViewModel> Budgets { get; set; }
 
-        public OverviewModel(ILogger<OverviewModel> logger, IConfiguration config, IHttpClientFactory clientFactory)
+        public BudgetsModel(IHttpClientFactory clientFactory, IConfiguration config, ILogger<BudgetsModel> logger)
         {
+            _clientFactory = clientFactory;
             _logger = logger;
             _config = config;
             _httpClient = clientFactory.CreateClient();
@@ -39,7 +42,7 @@ namespace BudgetTracker.Pages.Budgets
 
                 if (response != null)
                 {
-                    Budgets = response;
+                    Budgets = response ?? new List<BudgetSummaryViewModel>();
                 }
                 else
                 {
