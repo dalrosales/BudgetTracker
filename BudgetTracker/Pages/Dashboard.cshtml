@@ -6,7 +6,7 @@
 }
 
 <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 h-auto md:h-fit-content mb-4">
-    <div class="flex-1 w-full md:h-full p-4">
+    <div class="flex w-fit md:h-full p-4">
         <div class="flex justify-center min-h-fit">
             <div class="max-w-sm w-full bg-white rounded-lg shadow-sm dark:bg-gray-800 p-4 md:p-6">
 
@@ -84,9 +84,9 @@
         </div>
     </div>
 
-    <div class="flex-3 w-full justify-between md:h-fit-content p-4">
-        <div>
-            <div class="border-2 border-solid rounded-lg border-gray-300 dark:border-gray-600 md:h-full m-2 p-4">
+    <div class="flex flex-col w-full justify-between md:h-fit-content p-4">
+        <div class="md: mt-2">
+            <div class="border-2 border-solid rounded-lg border-gray-300 dark:border-gray-600 md:h-full p-4">
                 <div class="flex justify-between mb-1">
                     <span class="text-base font-small text-blue-700 dark:text-white">Income Spent</span>
                     <span class="text-sm font-small text-blue-700 dark:text-white">70%</span>
@@ -97,8 +97,8 @@
             </div>
         </div>
 
-        <div class="flex flex-row">
-            <div class="flex-1 border-2 border-solid rounded-lg border-gray-300 dark:border-gray-600 md:h-full m-2 p-4">
+        <div class="flex flex-row h-fit justify-between md: mb-2">
+            <div class="flex-1 border-2 border-solid rounded-lg border-gray-300 dark:border-gray-600 md: h-full mr-4 p-4">
                 <h3 class="flex text-xl font-bold dark:text-white">Top Budgets</h3>
                 <div class="flex flex-col">
                     <div>
@@ -128,9 +128,27 @@
                             <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 10%"></div>
                         </div>
                     </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-small text-blue-700 dark:text-white">Savings</span>
+                            <span class="text-sm font-small text-blue-700 dark:text-white">10%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                            <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-small text-blue-700 dark:text-white">Savings</span>
+                            <span class="text-sm font-small text-blue-700 dark:text-white">10%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                            <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 10%"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="flex-1 border-2 border-solid rounded-lg border-gray-300 dark:border-gray-600 md:h-full m-2 p-4">
+            <div class="flex-1 border-2 border-solid rounded-lg border-gray-300 dark:border-gray-600 md: h-full p-4">
                 <h3 class="flex text-xl font-bold dark:text-white">Top Categories</h3>
                 <div class="flex flex-col">
                     <div>
@@ -160,25 +178,48 @@
                             <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 10%"></div>
                         </div>
                     </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-small text-blue-700 dark:text-white">Beauty</span>
+                            <span class="text-sm font-small text-blue-700 dark:text-white">10%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                            <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 10%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-base font-small text-blue-700 dark:text-white">Beauty</span>
+                            <span class="text-sm font-small text-blue-700 dark:text-white">10%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mb-4 dark:bg-gray-700">
+                            <div class="bg-blue-600 h-1.5 rounded-full dark:bg-blue-500" style="width: 10%"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
     <div class="border-2 border-dashed border-gray-300 rounded-lg dark:border-gray-600 h-32 md:h-64"></div>
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-32 md:h-64"></div>
 </div>
+
 <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
+
 <div class="grid grid-cols-2 gap-4 mb-4">
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
 </div>
+
 <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-96 mb-4"></div>
+
 <div class="grid grid-cols-2 gap-4">
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
     <div class="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72"></div>
