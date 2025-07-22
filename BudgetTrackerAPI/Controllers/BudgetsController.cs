@@ -35,8 +35,9 @@ namespace BudgetTrackerAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBudget([FromBody] CreateBudgetDto createDto)
+        public async Task<IActionResult> CreateBudget([FromBody] CreateBudgetDto budgetDto)
         {
+            //Validate request via JWT Token
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
                 return Unauthorized("Invalid token or user ID.");
@@ -44,22 +45,9 @@ namespace BudgetTrackerAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var budget = new Budget
-            {
-                BudgetId = Guid.NewGuid(),
-                UserId = userId,
-                Name = createDto.Name,
-                BudgetedAmount = createDto.BudgetedAmount,
-                ActualAmount = createDto.ActualAmount,
-                Period = createDto.Period,
-                StartDate = createDto.StartDate,
-                EndDate = createDto.EndDate,
-                CreatedAt = DateTime.UtcNow
-            };
+            await _budgetService.CreateBudget(userId, budgetDto);
 
-            await _budgetService.CreateBudget(budget);
-
-            return CreatedAtAction(nameof(GetBudgetById), new { id = budget.BudgetId }, budget);
+            return NoContent(); //204 - Created Successfully
         }
 
         [HttpGet("{id}")]

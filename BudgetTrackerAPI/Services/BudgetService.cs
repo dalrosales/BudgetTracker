@@ -35,8 +35,21 @@ namespace BudgetTrackerAPI.Services
             return await _repo.GetBudgetAsync(id);
         }
 
-        public async Task CreateBudget(Budget budget)
+        public async Task CreateBudget(string userId, CreateBudgetDto budgetDto)
         {
+            var budget = new Budget
+            {
+                BudgetId = Guid.NewGuid(),
+                UserId = userId,
+                Name = budgetDto.Name,
+                BudgetedAmount = budgetDto.BudgetedAmount,
+                ActualAmount = budgetDto.ActualAmount,
+                Period = budgetDto.Period,
+                StartDate = budgetDto.StartDate,
+                EndDate = budgetDto.EndDate,
+                CreatedAt = DateTime.UtcNow
+            };
+
             await _repo.AddBudgetAsync(budget);
             await _repo.SaveChangesAsync();
         }

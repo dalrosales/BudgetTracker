@@ -7,7 +7,7 @@ namespace BudgetTrackerAPI.Interfaces
     {
         Task<List<BudgetSummaryDto>> GetUserBudgets(string userId);
         Task<Budget?> GetBudgetDetails(Guid id);
-        Task CreateBudget(Budget budget);
+        Task CreateBudget(string userId, CreateBudgetDto budgetDto);
         Task UpdateBudget(Budget budget);
         Task DeleteBudget(Guid id);
     }
