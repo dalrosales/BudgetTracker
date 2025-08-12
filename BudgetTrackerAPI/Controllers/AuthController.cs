@@ -61,8 +61,11 @@ namespace BudgetTrackerAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            var user = await _userManager.FindByEmailAsync(dto.Email);
-            if (user == null || !await _userManager.CheckPasswordAsync(user, dto.Password))
+            var email = (dto.Email ?? string.Empty).Trim();
+            var password = (dto.Password ?? string.Empty).Trim();
+
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user == null || !await _userManager.CheckPasswordAsync(user, password))
                 return Unauthorized("Invalid credentials");
 
             var token = _authService.GenerateToken(user);

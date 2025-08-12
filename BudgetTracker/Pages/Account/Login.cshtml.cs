@@ -31,15 +31,19 @@ namespace BudgetTracker.Pages.Account
         public void OnGet()
         {
         }
+
         public async Task<IActionResult> OnPostAsync()
         {
+            var email = (Email ?? string.Empty).Trim();
+            var password = (Password ?? string.Empty).Trim();
+
             var apiBaseUrl = _configuration["ApiBaseUrl"];
             var client = _httpClientFactory.CreateClient();
 
             var response = await client.PostAsJsonAsync($"{apiBaseUrl}/auth/login", new
             {
-                this.Email,
-                this.Password
+                Email = email,
+                Password = password
             });
 
             if (!response.IsSuccessStatusCode)
@@ -48,25 +52,18 @@ namespace BudgetTracker.Pages.Account
                 return Page();
             }
 
-            var json = await response.Content.ReadAsStringAsync();
-            var tokenObj = JsonSerializer.Deserialize<TokenResponse>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var tokenObj = await response.Content.ReadFromJsonAsync<TokenResponse>(
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, Email),
-                new Claim("Jwt", tokenObj.Token) // store JWT as a claim
+                new(ClaimTypes.Name, Email),
+                new("Jwt", tokenObj!.Token) // store JWT as a claim
             };
 
             var identity = new ClaimsIdentity(claims, "Cookies");
-            var principal = new ClaimsPrincipal(identity);
-
-            await HttpContext.SignInAsync("Cookies", principal, new AuthenticationProperties
-            {
-                IsPersistent = true, //Enables "Remember Me"
-                ExpiresUtc = DateTime.UtcNow.AddHours(2)
-            });
-
-            _logger.LogInformation($"User '{Email}' logged in successfully.");
+            await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(identity),
+                new AuthenticationProperties { IsPersistent = true, ExpiresUtc = DateTime.UtcNow.AddHours(2) });
 
             return RedirectToPage("/Dashboard");
         }
