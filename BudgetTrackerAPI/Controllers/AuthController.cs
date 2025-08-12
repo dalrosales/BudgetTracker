@@ -29,13 +29,16 @@ namespace BudgetTrackerAPI.Controllers
         {
             try
             {
+                var email = (model.Email ?? string.Empty).Trim();
+                var password = (model.Password ?? string.Empty).Trim();
+
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
-                    Email = model.Email
+                    UserName = email,
+                    Email = email
                 };
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, password);
 
                 if (!result.Succeeded)
                 {

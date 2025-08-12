@@ -62,6 +62,7 @@ namespace BudgetTracker.Pages.Account
             };
 
             var identity = new ClaimsIdentity(claims, "Cookies");
+
             await HttpContext.SignInAsync("Cookies", new ClaimsPrincipal(identity),
                 new AuthenticationProperties { IsPersistent = true, ExpiresUtc = DateTime.UtcNow.AddHours(2) });
 
